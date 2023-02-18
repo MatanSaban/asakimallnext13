@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime? @default(now())
+  email        String    @unique
+  mobilephone  String    @unique
+  // verified     Boolean
+  firstname    String
+  lastname     String
+  profileimage String
+  coverimage   String
+  role         Role?     @default(USER)
+  hasStore     Boolean?
+  sellerId     String?   @db.ObjectId
+  sellerObj    Sellers?
+  cart         String[] // get product id's
+  ordersIds    String[]  @db.ObjectId
+  orders       Orders[]  @relation(fields: [ordersIds], references: [id])
+}
+
+model Orders {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime?  @default(now())
+  status      String // progress / completed / canceled / refunded?
+  products    Products[] @relation(fields: [productsIds], references: [id])
+  productsIds String[]   @db.ObjectId
+  usersIds    String[]   @db.ObjectId
+  users       Users[]    @relation(fields: [usersIds], references: [id])
+  sellerId    String     @db.ObjectId
+  seller      Sellers    @relation(fields: [sellerId], references: [id])
+}
+
+model Stores {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime   @default(now())
+  published  Boolean
+  name       String
+  slug       String
+  products   Products[]
+  owner      Sellers    @relation(fields: [sellersId], references: [id])
+  sellersId  String     @db.ObjectId
+  coverImage String
+  category   Categories @relation(fields: [categoryId], references: [id])
+  categoryId String     @db.ObjectId
+}
+
+model Sellers {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  store     Stores[]
+  user      Users    @relation(fields: [usersId], references: [id])
+  usersId   String   @unique @db.ObjectId
+  orders    Orders[]
+}
+
+model Products {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String?
+  mainImage    String
+  gallery      String[]
+  price        String
+  store        Stores?    @relation(fields: [storeId], references: [id])
+  storeId      String?    @db.ObjectId
+  orders       Orders[]   @relation(fields: [ordersIds], references: [id])
+  ordersIds    String[]   @db.ObjectId
+  category     Categories @relation(fields: [categoriesId], references: [id])
+  categoriesId String     @db.ObjectId
+}
+
+model Categories {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  stores   Stores[]
+  products Products[]
+}
+
+enum Role {
+  ADMIN
+  USER
+  SELLER
+}

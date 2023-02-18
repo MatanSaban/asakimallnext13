@@ -1,0 +1,240 @@
+html,
+body {
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+}
+header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 10px #00000030;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+  div {
+    width: 20%;
+    button {
+      background-color: orange;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 20px;
+      width: 150px;
+      margin: 0 5px;
+      font-size: 1.3rem;
+      font-family: "__ellaSans_3350c3", "__ellaSans_Fallback_3350c3";
+      cursor: pointer;
+      transition: background 0.3s ease;
+      &:hover {
+        background-color: #1f5dcf;
+      }
+    }
+  }
+  nav {
+    width: 60%;
+    ul {
+      display: flex;
+      justify-content: flex-start;
+      li {
+        margin: 0 20px;
+        padding: 10px 20px;
+        a {
+          text-decoration: none;
+          color: #000000;
+          font-size: 1.3rem;
+          position: relative;
+          &::after {
+            content: "";
+            width: 0%;
+            height: 3px;
+            background-color: orange;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            transition: all 0.3s ease;
+          }
+          &:hover:after {
+            width: 100% !important;
+          }
+        }
+        &:hover a {
+        }
+      }
+    }
+  }
+}
+footer {
+  background-color: rgb(190, 190, 190);
+  min-height: 100px;
+  position: relative;
+}
+main {
+  min-height: 100vh;
+}
+/* admin page */
+
+/*SIDEBAR*/
+.adminPage {
+  display: flex;
+  justify-content: flex-start;
+  aside {
+    position: fixed;
+    width: 15%;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: rgb(19, 86, 202);
+    color: white;
+    text-shadow: 0 0 10px black;
+    font-size: 1.3rem;
+    a {
+      color: white;
+      text-shadow: 0 0 10px black;
+      text-decoration: none;
+    }
+    li {
+      padding: 10px;
+      background-color: orange;
+      border: 1px solid gray;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: black;
+      }
+    }
+  }
+  div {
+    width: 85%;
+  }
+}
+/*MAIN*/
+
+/* end of admin page */
+
+/*GENERAL CSS*/
+ul {
+  padding: 5px;
+  list-style: none;
+}
+/*END OF GENERAL CSS*/
+
+/* phone shop model */
+div.index.storesPage {
+  .archive {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+    .shop {
+      position: relative;
+      .phone {
+        border: 20px solid black;
+        border-radius: 50px;
+        height: 500px;
+        max-height: 500px;
+        min-height: 500px;
+        max-width: 80%;
+        padding: 5px 0px 0px 0px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: white;
+        &:after {
+          content: "";
+          width: 100%;
+          height: 20px;
+          position: absolute;
+          bottom: 0px;
+          left: 50%;
+          transform: translateX(-50%);
+          box-shadow: 0 30px 20px #0000005b;
+        }
+        .pergula {
+          background-color: transparent;
+          width: calc(100% + 50px);
+          height: 20%;
+          position: absolute;
+          top: -20px;
+          left: -25px;
+          border-radius: 50px 50px 0 0;
+          box-shadow: 0px -20px 35px -20px rgb(0 0 0 / 52%);
+          perspective: 100px;
+          .pergula_up {
+            background-color: rgb(188, 40, 40);
+            width: 100%;
+            height: 40%;
+            margin-top: -5px;
+            border-radius: inherit;
+            position: relative;
+            display: flex;
+            transform: perspective(100px) rotateX(5deg);
+            .wineRed {
+              background-color: transparent;
+              width: 50%;
+              height: 100%;
+              position: relative;
+            }
+            .offWhite {
+              background-color: white;
+              width: 50%;
+              height: 100%;
+              position: relative;
+            }
+          }
+          .pergula_down {
+            width: calc(100% + 16px);
+            height: 30%;
+            margin: 0 -8px;
+            border-radius: 0;
+            position: relative;
+            display: flex;
+            transform: perspective(144px) rotateX(1deg);
+            .wineRed {
+              background-color: rgb(149, 12, 12);
+              width: 50%;
+              height: 100%;
+              position: relative;
+              border-radius: 0 0 50px 50px;
+              box-shadow: 0 0 60px 6px #00000085;
+            }
+            .offWhite {
+              background-color: rgb(237, 237, 237);
+              width: 50%;
+              height: 100%;
+              position: relative;
+              border-radius: 0 0 50px 50px;
+              box-shadow: 0 0 60px 6px #00000085;
+            }
+          }
+        }
+        .storeButton {
+          width: 100%;
+          position: relative;
+          a {
+            width: 100%;
+            height: 100%;
+            button {
+              width: 100%;
+              height: 100%;
+              background-color: rgb(253, 214, 86);
+              border-radius: 0 0 30px 30px;
+              border: none;
+              padding: 10px 0;
+              font-size: 1.2rem;
+              font-family: "__ellaSans_3350c3", "__ellaSans_Fallback_3350c3";
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/* End of phone shop model */
