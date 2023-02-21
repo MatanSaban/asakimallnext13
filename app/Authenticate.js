@@ -19,7 +19,10 @@ export async function authenticateUser(userEmail, password) {
     redirect: "follow",
   };
 
-  const checkAuth = await fetch(`/api/users/${userEmail}`, requestOptions);
+  const checkAuth = await fetch(
+    `${process.env.WEBSITE_URL}/api/users/${userEmail}`,
+    requestOptions
+  );
   const answer = await checkAuth.json();
   console.log("answer");
   console.log(typeof answer);
