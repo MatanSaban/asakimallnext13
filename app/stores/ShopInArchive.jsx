@@ -15,9 +15,6 @@ async function ShopInArchive(props) {
 
     const categoryName = category.name;
 
-    console.log(props)
-
-
     return (
         <div className='shop'>
             <div className='phone'>
