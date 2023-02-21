@@ -1,3 +1,4 @@
+'use clienti'
 import React from 'react'
 
 function MyAccountLayout() {

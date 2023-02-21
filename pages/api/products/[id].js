@@ -2,6 +2,7 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  getProductsByStoreId,
 } from "@/lib/prisma/products";
 
 const handler = async (req, res) => {
@@ -9,6 +10,13 @@ const handler = async (req, res) => {
     try {
       const id = req.query.id;
       const { product, error } = await getProductById(id);
+      if (error || error == null) {
+        const { products, error } = await getProductsByStoreId(id); // check if id is a store id
+        console.log("here");
+        console.log(products);
+        if (error) throw new Error(error);
+        return res.status(200).json({ products });
+      }
       if (error) throw new Error(error);
       return res.status(200).json({ product });
     } catch (error) {

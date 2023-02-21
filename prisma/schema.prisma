@@ -18,8 +18,9 @@ model Users {
   // verified     Boolean
   firstname    String
   lastname     String
-  profileimage String
-  coverimage   String
+  password     String
+  profileimage String?
+  coverimage   String?
   role         Role?     @default(USER)
   hasStore     Boolean?
   sellerId     String?   @db.ObjectId
@@ -46,7 +47,7 @@ model Stores {
   createdAt  DateTime   @default(now())
   published  Boolean
   name       String
-  slug       String
+  slug       String     @unique
   products   Products[]
   owner      Sellers    @relation(fields: [sellersId], references: [id])
   sellersId  String     @db.ObjectId
@@ -66,10 +67,10 @@ model Sellers {
 
 model Products {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  name         String?
-  mainImage    String
+  name         String
+  mainImage    String?
   gallery      String[]
-  price        String
+  price        Int
   store        Stores?    @relation(fields: [storeId], references: [id])
   storeId      String?    @db.ObjectId
   orders       Orders[]   @relation(fields: [ordersIds], references: [id])
@@ -81,6 +82,7 @@ model Products {
 model Categories {
   id       String     @id @default(auto()) @map("_id") @db.ObjectId
   name     String
+  image    String
   stores   Stores[]
   products Products[]
 }

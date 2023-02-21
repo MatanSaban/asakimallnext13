@@ -1,11 +1,21 @@
-import { getStoreById, updateStore, deleteStore } from "@/lib/prisma/stores";
+import {
+  getStoreById,
+  updateStore,
+  deleteStore,
+  getStoreBySlug,
+} from "@/lib/prisma/stores";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const id = req.query.id;
-      const { store, error } = await getStoreById(id);
-      if (error) throw new Error(error);
+      console.log(req.query);
+      let { store, error } = await getStoreById(id);
+      if (error) {
+        let { store, error } = await getStoreBySlug(id); // check if id means slug
+        if (error) throw new Error(error);
+        return res.status(200).json({ store });
+      }
       return res.status(200).json({ store });
     } catch (error) {
       return res.status(500).json({ error: error.message });

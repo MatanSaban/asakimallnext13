@@ -59,9 +59,49 @@ const ellaSans = localFont({
 });
 
 
-export default function RootLayout({ children }) {
+import { cookies } from 'next/headers';
+import { getUserById } from '@/lib/prisma/users';
+
+export default async function RootLayout({ children }) {
+
+
+  const websiteCookies = cookies();
+  const userToken = websiteCookies.get('userToken')
+  const loggedIn = websiteCookies.get('loggedIn')
+  const userIdFromToken = (token) => {
+    token = token.value.toString();
+    const tokenArr = token.split('j666x');
+    const userId = tokenArr[0]
+    return userId;
+  }
+
+  let userData = null;
+  const checkIfLoggedIn = async () => {
+    if (loggedIn) {
+      console.log("logged in in cookies")
+      if (userToken) {
+        console.log("userToken in cookies")
+        const userId = await userIdFromToken(userToken);
+        console.log(userId)
+        const res = await getUserById(userId)
+        const user = res.user;
+        if (user) {
+          userData = user;
+          return true
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+
   return (
-    <html lang="he" className={ellaSans.className}>
+    <html lang="he" className={`${ellaSans.className} ${await checkIfLoggedIn() ? 'loggedin' : ''}`}>
       {/*
         <head /> will contain the components returned by the nearest parent
         head.js. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
@@ -69,7 +109,7 @@ export default function RootLayout({ children }) {
       <head />
 
       <body>
-        <Header />
+        <Header userCart={userData?.cart} useEmail={userData?.email} userFirstname={userData?.firstname} userLastname={userData?.lastname} userPhone={userData?.mobilephone} userRole={userData?.role} userHasStore={userData?.hasStore} isLoggedIn={await checkIfLoggedIn()} />
         {children}
         <Footer />
       </body>

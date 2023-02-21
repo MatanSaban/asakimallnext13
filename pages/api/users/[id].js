@@ -1,17 +1,24 @@
 import {
-  createUser,
   deleteUser,
   getUserById,
-  getUsers,
+  getUserByMail,
   updateUser,
 } from "@/lib/prisma/users";
 
 const handler = async (req, res) => {
-  if (req.method === "GET") {
+  if (req.method === "GET" || req.method === "POST") {
     try {
       const id = req.query.id;
+      const { pass } = req.body;
       const { user, error } = await getUserById(id);
-      if (error) throw new Error(error);
+      if (error) {
+        const { user, error } = await getUserByMail(id, pass);
+        if (error) {
+          throw new Error(error);
+          return res.status(425).json({ error: "no match" });
+        }
+        return res.status(200).json(user.id);
+      }
       return res.status(200).json({ user });
     } catch (error) {
       return res.status(500).json({ error: error.message });

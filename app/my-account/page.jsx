@@ -1,8 +1,14 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
+
 
 function MyAccountPage() {
+
+
     return (
-        <div>MyAccountPage</div>
+        <div>
+            my acc page
+        </div>
     )
 }
 

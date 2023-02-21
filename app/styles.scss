@@ -4,6 +4,9 @@ body {
   margin: 0;
   padding: 0;
 }
+* {
+  font-family: inherit;
+}
 header {
   position: sticky;
   top: 0;
@@ -15,27 +18,57 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 0 50px;
-  div {
+  z-index: 9;
+  .LogoDiv {
     width: 20%;
-    button {
-      background-color: orange;
+  }
+  .userDiv {
+    width: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .openStore {
+      background-color: #1f5dcf;
       color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 8px 20px;
-      width: 150px;
-      margin: 0 5px;
-      font-size: 1.3rem;
-      font-family: "__ellaSans_3350c3", "__ellaSans_Fallback_3350c3";
-      cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
       &:hover {
-        background-color: #1f5dcf;
+        background-color: orange;
+      }
+    }
+    .logoutButton {
+      background-color: red;
+      &:hover {
+        background-color: rgb(153, 36, 36);
+      }
+    }
+    button.cartIcon {
+      background: none;
+      color: black;
+      font-size: 2.2rem;
+      width: fit-content;
+      margin: 0 5px;
+      position: relative;
+      transition: all 1s ease;
+      &:after {
+        content: "77";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 25px;
+        height: 25px;
+        font-size: 1rem;
+        background-color: red;
+        color: white;
+        text-shadow: 0 0 10px white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
   nav {
-    width: 60%;
+    width: 45%;
     ul {
       display: flex;
       justify-content: flex-start;
@@ -67,13 +100,102 @@ header {
     }
   }
 }
+.popUpWrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  background-color: #00000060;
+  backdrop-filter: blur(0);
+  transition: all 0.5s ease;
+  .background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+}
+.popUpWrapper.showCart {
+  opacity: 1;
+  backdrop-filter: blur(5px);
+  transition: all 0.5s ease;
+}
+.cartPopup {
+  position: absolute;
+  left: calc(-21%);
+  top: 0;
+  height: 90vh;
+  width: 20vw;
+  background-color: white;
+  box-shadow: 0 0 10px black;
+  padding-top: 10vh;
+  z-index: 2;
+  overflow-y: auto;
+  transition: all 0.5s ease;
+
+  h3 {
+    font-size: 2rem;
+  }
+  button.toPayment {
+    background-color: green;
+    color: white;
+    width: 100%;
+    border-radius: 0;
+  }
+  .products {
+    min-height: 50%;
+    padding-right: 10px;
+    padding-left: 10px;
+    .productStoreWrapper {
+      padding: 10px;
+      border-radius: 10px;
+      .product {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        .productImage {
+          width: 15%;
+          min-width: 15%;
+          max-width: 15%;
+          border: 1px solid black;
+          height: 100%;
+        }
+        .productTitleAndStore {
+          font-size: 0.9rem;
+          font-weight: 400;
+          h4 {
+            font-size: 0.9rem;
+            font-weight: 400;
+          }
+        }
+        .productPriceAndAmount {
+          font-weight: 400;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+.cartPopup.showCart {
+  left: 0;
+  transition: all 0.5s ease;
+}
+.cartPopup.hideCart {
+  left: calc(-21%);
+  transition: all 0.5s ease;
+}
+
 footer {
   background-color: rgb(190, 190, 190);
   min-height: 100px;
   position: relative;
+  z-index: 2;
 }
 main {
-  min-height: 100vh;
+  min-height: 76.1vh;
 }
 /* admin page */
 
@@ -116,14 +238,247 @@ main {
 /* end of admin page */
 
 /*GENERAL CSS*/
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+button {
+  background-color: orange;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  width: 150px;
+  margin: 0 5px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  &:hover {
+    background-color: #1f5dcf;
+  }
+}
+
 ul {
   padding: 5px;
   list-style: none;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  margin-top: 50px;
+  .formTitle {
+    font-size: 1.5rem;
+  }
+  button {
+    padding: 10px 20px;
+    border: none;
+    background-color: green;
+    color: white;
+    margin-top: 20px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: rgb(48, 153, 48);
+    }
+  }
+  div {
+    display: flex;
+    // flex-direction: column;
+    position: relative;
+    div {
+      margin: 5px;
+      position: relative;
+      label {
+        position: absolute;
+        top: -10px;
+        right: 15px;
+        padding: 0 5px;
+        background: white;
+      }
+      input {
+        padding: 15px 10px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
 /*END OF GENERAL CSS*/
 
+/* Pages */
+/* single store */
+main.SingleStorePage {
+  .productIndex {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    justify-content: space-around;
+    margin-top: 100px;
+    .product {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00000050;
+      min-height: 300px;
+      padding: 20px;
+      position: relative;
+      text-decoration: none;
+      color: black;
+      transition: all 0.3s ease;
+      &:hover {
+        box-shadow: 0 0 40px #00000050;
+      }
+      .productData {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        h4 {
+          margin-top: 0;
+          margin-bottom: 10px;
+        }
+        h3 {
+          margin-bottom: 10px;
+        }
+      }
+      .productDetails {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        .productImage {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+            max-height: 300px;
+            max-width: 300px;
+          }
+        }
+      }
+      button {
+        z-index: 99;
+        &:hover {
+          background-color: green;
+        }
+      }
+    }
+  }
+}
+/*Login Popup*/
+.loginPopup {
+  form {
+    min-width: 40%;
+    position: relative;
+    div {
+      width: 100%;
+      flex-direction: column !important;
+      i {
+        position: absolute;
+        left: 5px;
+        top: calc(50% + 2px);
+        cursor: pointer;
+        transform: translateY(-50%);
+        font-size: 1.6rem;
+      }
+    }
+  }
+}
+/*Register page*/
+main.registerPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  button {
+    padding: 5px 10px;
+  }
+}
+/* end of Pages */
+
+/*popup css*/
+.popupModal.showPopup {
+  opacity: 1;
+  backdrop-filter: blur(7px);
+}
+.popupModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #00000080;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  opacity: 0;
+  backdrop-filter: blur(0px);
+  transition: all 0.3s ease;
+  .popupBackground {
+    z-index: 0;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+  }
+  .popupContent.showPopup {
+    margin-top: 0;
+    opacity: 1;
+    z-index: 999;
+  }
+  .popupContent {
+    position: relative;
+    padding: 20px 0 40px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0 0 10px #00000061;
+    width: 50%;
+    height: fit-content;
+    margin-top: -200px;
+    background-color: white;
+    border-radius: 50px;
+    opacity: 0;
+    transition: all 0.3s ease;
+
+    .closePopup {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: fit-content;
+      background-color: red;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: rgb(128, 28, 28);
+      }
+    }
+  }
+}
+/*end of popup css*/
+
 /* phone shop model */
-div.index.storesPage {
+main.index.storesPage {
   .archive {
     display: grid;
     grid-template-columns: 20% 20% 20% 20%;
@@ -131,6 +486,8 @@ div.index.storesPage {
     justify-content: center;
     align-items: center;
     margin-bottom: 100px;
+    position: relative;
+    z-index: 0;
     .shop {
       position: relative;
       .phone {
@@ -153,6 +510,7 @@ div.index.storesPage {
           position: absolute;
           bottom: 0px;
           left: 50%;
+          z-index: -1;
           transform: translateX(-50%);
           box-shadow: 0 30px 20px #0000005b;
         }
@@ -214,6 +572,19 @@ div.index.storesPage {
             }
           }
         }
+        .shopData {
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background-position: center;
+          background-repeat: repeat;
+          background-size: cover;
+          img {
+            width: calc(100% + 20px);
+            object-fit: cover;
+          }
+        }
         .storeButton {
           width: 100%;
           position: relative;
@@ -227,9 +598,10 @@ div.index.storesPage {
               border-radius: 0 0 30px 30px;
               border: none;
               padding: 10px 0;
+              cursor: pointer;
               font-size: 1.2rem;
-              font-family: "__ellaSans_3350c3", "__ellaSans_Fallback_3350c3";
               font-weight: bold;
+              margin: 0;
             }
           }
         }
