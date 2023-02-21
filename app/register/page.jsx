@@ -77,7 +77,7 @@ function UserRegisterPage() {
                 redirect: 'follow'
             };
 
-            fetch(process.env.WEBSITE_URL + "/api/users/", requestOptions)
+            fetch("/api/users/", requestOptions)
                 .then(response => response.json())
                 .then(loginUser()).then(() => {
                     console.log('redirecting')
