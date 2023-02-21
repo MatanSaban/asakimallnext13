@@ -35,17 +35,19 @@ function Header(props) {
             setTimeout(() => {
                 setCartPopup(false)
             }, 600);
-        }
-        if (cartPopup) {
-            setShowCart(false)
-            setTimeout(() => {
-                setCartPopup(false)
-            }, 600);
         } else {
-            setCartPopup(true)
-            setTimeout(() => {
-                setShowCart(true)
-            }, 400);
+
+            if (cartPopup) {
+                setShowCart(false)
+                setTimeout(() => {
+                    setCartPopup(false)
+                }, 600);
+            } else {
+                setCartPopup(true)
+                setTimeout(() => {
+                    setShowCart(true)
+                }, 400);
+            }
         }
     }
 
@@ -113,7 +115,7 @@ function Header(props) {
             {cartPopup && <SideCart handleCart={handleCart} isLoggedIn={props.isLoggedIn} showCart={showCart} userCart={props.userCart} />}
             <header>
                 <div className="LogoDiv">
-                    <Link href="/"><Image src={Logo} alt="logo" /></Link>
+                    <Link onClick={() => handleCart(false)} href="/"><Image src={Logo} alt="logo" /></Link>
                 </div>
                 <nav>
                     <ul>
@@ -126,13 +128,13 @@ function Header(props) {
                 <div className="userDiv">
                     {!isLoggedIn ?
                         <>
-                            <Link href="register"><button>הרשמה</button></Link>
+                            <Link onClick={() => handleCart(false)} href="register"><button>הרשמה</button></Link>
                             <button onClick={() => handlePopup(true)}>התחברות</button>
                         </>
                         :
                         <>
                             {!props.userHasStore && <Link href='/register/seller'><button className="openStore">פתיחת חנות</button></Link>}
-                            <Link href='/my-account'><button>החשבון שלי</button></Link>
+                            <Link onClick={() => handleCart(false)} href='/my-account'><button>החשבון שלי</button></Link>
                             <button className="logoutButton" onClick={() => logout()}>התנתקות</button>
                         </>
                     }
