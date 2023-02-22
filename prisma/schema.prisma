@@ -43,40 +43,43 @@ model Orders {
 }
 
 model Stores {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt  DateTime   @default(now())
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime?   @default(now())
   published  Boolean
   name       String
-  slug       String     @unique
+  slug       String      @unique
   products   Products[]
-  owner      Sellers    @relation(fields: [sellersId], references: [id])
-  sellersId  String     @db.ObjectId
-  coverImage String
-  category   Categories @relation(fields: [categoryId], references: [id])
-  categoryId String     @db.ObjectId
+  owner      Sellers?    @relation(fields: [sellersId], references: [id])
+  sellersId  String      @db.ObjectId
+  coverImage String?
+  categoryId String?     @db.ObjectId
+  category   Categories? @relation(fields: [categoryId], references: [id])
 }
 
 model Sellers {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   store     Stores[]
+  storeId   String?
   user      Users    @relation(fields: [usersId], references: [id])
   usersId   String   @unique @db.ObjectId
   orders    Orders[]
 }
 
 model Products {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  mainImage    String?
-  gallery      String[]
-  price        Int
-  store        Stores?    @relation(fields: [storeId], references: [id])
-  storeId      String?    @db.ObjectId
-  orders       Orders[]   @relation(fields: [ordersIds], references: [id])
-  ordersIds    String[]   @db.ObjectId
-  category     Categories @relation(fields: [categoriesId], references: [id])
-  categoriesId String     @db.ObjectId
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  mainImage        String?
+  gallery          String[]
+  price            Int
+  store            Stores?    @relation(fields: [storeId], references: [id])
+  storeId          String?    @db.ObjectId
+  orders           Orders[]   @relation(fields: [ordersIds], references: [id])
+  ordersIds        String[]   @db.ObjectId
+  category         Categories @relation(fields: [categoriesId], references: [id])
+  categoriesId     String     @db.ObjectId
+  shortdescription String
+  description      String
 }
 
 model Categories {

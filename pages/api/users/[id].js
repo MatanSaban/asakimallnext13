@@ -15,7 +15,6 @@ const handler = async (req, res) => {
         const { user, error } = await getUserByMail(id, pass);
         if (error) {
           throw new Error(error);
-          return res.status(425).json({ error: "no match" });
         }
         return res.status(200).json(user.id);
       }
@@ -31,7 +30,7 @@ const handler = async (req, res) => {
       const id = req.query.id;
       const { updatedUser, error } = await updateUser(id, data);
       if (error) throw new Error(error);
-      return res.status(200).json({ data: updatedUser });
+      return res.status(200).json({ data: 'SUCCESS', sellerId: updatedUser.sellerId });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

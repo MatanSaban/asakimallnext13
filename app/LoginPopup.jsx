@@ -2,7 +2,7 @@
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import React, { useState } from 'react'
-import { authenticateUser } from './Authenticate';
+import { authenticateUser } from './functions';
 import { redirect } from 'next/navigation';
 
 
@@ -11,8 +11,10 @@ function LoginPopup(props) {
 
     const [showPassword, setShowPassword] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState('notyet')
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault();
         const email = e.target[0].value
         const password = e.target[1].value
@@ -20,6 +22,7 @@ function LoginPopup(props) {
             console.log("res")
             console.log(res)
             if (res === true) {
+                setLoading(false)
                 setIsLoggedIn(true)
                 setTimeout(() => {
                     props.handlePopup(false)
@@ -27,6 +30,7 @@ function LoginPopup(props) {
                     window.location.replace("/")
                 }, 1500);
             } else {
+                setLoading(false)
                 setIsLoggedIn(false)
             }
         })
@@ -51,6 +55,7 @@ function LoginPopup(props) {
                         </div>
                     </div>
                     <button type='submit'>התחברות</button>
+                    {loading && <span>מאמת נתונים..</span>}
                     {isLoggedIn == true && <p>התחברת בהצלחה</p>}
                     {isLoggedIn == false && <p>שם המשתמש או הסיסמא אינם נכונים</p>}
                 </form>

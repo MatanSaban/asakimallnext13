@@ -7,6 +7,52 @@ body {
 * {
   font-family: inherit;
 }
+/* ScrollBar CSS */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: orange;
+  border-radius: 15px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* End Of ScrollBar CSS */
+p {
+  line-height: 1.6;
+}
+
+*:required:after {
+  content: '*';
+  color: red;
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+}
+.errorP {
+  text-align: center;
+  color: red;
+}
+.successP {
+  text-align: center;
+  color: green;
+}
+.loadingP {
+  text-align: center;
+  color: black;
+}
 header {
   position: sticky;
   top: 0;
@@ -27,10 +73,23 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    button {
+      width: max-content;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      text-shadow: 0 0 10px #00000050;
+    }
     .openStore {
       background-color: #1f5dcf;
       color: white;
       transition: all 0.3s ease;
+      &:hover {
+        background-color: orange;
+      }
+    }
+    button.storeManagment {
+      background-color: #4476d2;
       &:hover {
         background-color: orange;
       }
@@ -252,9 +311,9 @@ button {
   border: none;
   border-radius: 20px;
   padding: 8px 20px;
-  width: 150px;
+  width: fit-content;
   margin: 0 5px;
-  font-size: 1.3rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
   &:hover {
@@ -283,7 +342,6 @@ form {
     background-color: green;
     color: white;
     margin-top: 20px;
-    font-size: 1.3rem;
     cursor: pointer;
     transition: all 0.3s ease;
     &:hover {
@@ -294,20 +352,42 @@ form {
     display: flex;
     // flex-direction: column;
     position: relative;
+    width: 100%;
     div {
       margin: 5px;
       position: relative;
+      width: 50%;
+      button {
+        background-color: transparent;
+        color: black;
+        height: 100%;
+        border-radius: 5px;
+        margin: 0;
+        border: 2px solid black;
+        width: 100%;
+        &:hover {
+          background-color: whitesmoke;
+        }
+      }
       label {
         position: absolute;
         top: -10px;
         right: 15px;
         padding: 0 5px;
         background: white;
+        font-size: 1rem;
+        width: max-content;
       }
-      input {
+      input, 
+      textarea,
+      select {
         padding: 15px 10px;
         border-radius: 5px;
+        border: 2px solid black;
         font-size: 1.2rem;
+        width: 100%;
+        resize: vertical;
+        
       }
     }
   }
@@ -315,6 +395,141 @@ form {
 /*END OF GENERAL CSS*/
 
 /* Pages */
+
+/* StoreManagement-> Add Product */
+.storeManagmentPage div.addProduct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* StoreManagement Layout */
+.storeManagmentPage {
+  .storeMain{
+    .storeData {
+      h2 {
+        background-color: rgb(221, 218, 218);
+        width: fit-content;
+        margin: 0 auto;
+        padding: 10px;
+        border-radius: 10px 10px 0 0;
+      }
+      .storeDetails {
+        display: flex;
+        justify-content: space-between;
+        background-color: rgb(221, 218, 218);
+        border-radius: 20px;
+        padding: 20px;
+        margin: 0 100px;
+        box-shadow: 0 0 20px 0px #00000020;
+        div {
+          p {
+            text-align: center;
+          }
+        }
+      }
+      .storePromotions {
+        display: flex;
+        justify-content: space-around;
+        h3 {
+          font-size: 1.1rem;
+        }
+        p{
+          font-size: 0.9rem;
+        }
+        button {
+          font-size: 1rem;
+        }
+        > div {
+          background-color: rgb(233, 140, 140);
+          color: white;
+          text-shadow: 0 0 10px black;
+          width: 300px;
+          height: 300px;
+          margin: 50px auto;
+          padding: 15px;
+          border-radius: 50%;
+          box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.22);
+          font-size: 1rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .promotions {
+          background-color: #7ea6f0;
+        }
+        .noProducts {         
+          button {
+            font-size: 1rem;
+            padding: 10px 15px;
+            width: fit-content;
+            background-color: rgb(77, 157, 77);
+            &:hover {
+              background-color: rgb(45, 172, 45);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* My account layout + StoreManagement Layout */
+
+.MyAccountLayout , .storeManagmentPage {
+  display: flex;
+  justify-content: flex-start;
+  main {
+    margin: 50px auto;
+    width: 100%;
+    text-align: center;
+  }
+  aside {
+    width: 15%;
+    padding: 50px 0 0 0;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    ul {
+      width: 100%;
+      margin: 0 auto;
+      padding: 0;
+      li {
+        margin: 10px auto ;
+        width: 100%;
+        text-align: center;
+        ul {
+          padding: 0 10px 0 0;
+        }
+        a.MyStoreManagement {
+          button {
+            background-color: #4476d2;
+          }
+        }
+        button {
+          font-size: 1rem;
+          padding: 5px;
+          width: 150px;
+          transition: all 0.3s ease;
+          &:hover {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Sellers Register Page */
+
+main.SellerRegisterPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 /* single store */
 main.SingleStorePage {
   .productIndex {

@@ -2,6 +2,9 @@ import Header from './Header';
 import Footer from './Footer';
 import './styles.scss'
 import localFont from '@next/font/local';
+import { cookies } from 'next/headers';
+import { getUserById } from '@/lib/prisma/users';
+
 
 // Font files can be colocated inside of `app`
 const ellaSans = localFont({
@@ -59,8 +62,6 @@ const ellaSans = localFont({
 });
 
 
-import { cookies } from 'next/headers';
-import { getUserById } from '@/lib/prisma/users';
 
 export default async function RootLayout({ children }) {
 

@@ -17,6 +17,7 @@ function Header(props) {
 
     const onlyForLoggedInUsersArray = [
         '/my-account',
+        '/register/seller'
     ]
     const onlyForNotLoggedInUsersArray = [
         '/register'
@@ -127,16 +128,20 @@ function Header(props) {
                 </nav>
                 <div className="userDiv">
                     {!isLoggedIn ?
-                        <>
+                        <div className="loginAndRegister">
                             <Link onClick={() => handleCart(false)} href="register"><button>הרשמה</button></Link>
                             <button onClick={() => handlePopup(true)}>התחברות</button>
-                        </>
+                        </div>
                         :
-                        <>
-                            {!props.userHasStore && <Link href='/register/seller'><button className="openStore">פתיחת חנות</button></Link>}
+                        <div className="loggedinUser">
+                            {!props.userHasStore ? <Link href='/register/seller'><button className="openStore">פתיחת חנות</button></Link>
+                            :
+                            <Link href='/my-account/store-management'><button className="storeManagment">ניהול החנות</button></Link>
+                            }
+                            
                             <Link onClick={() => handleCart(false)} href='/my-account'><button>החשבון שלי</button></Link>
                             <button className="logoutButton" onClick={() => logout()}>התנתקות</button>
-                        </>
+                        </div>
                     }
                     <button onClick={() => handleCart()} className="cartIcon"><AiOutlineShoppingCart /></button>
                 </div>
