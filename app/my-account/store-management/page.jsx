@@ -49,6 +49,23 @@ function StoreManagment() {
       }
       getData(); 
   },[reRender])
+
+  const updateProducts = (newProducts) => {
+    const oldStoreData = storeDataProp;
+    oldStoreData.products = newProducts;
+    const newStoreData = oldStoreData;
+    setStoreDataProp(newStoreData)
+    console.log('updated products')
+    console.log('updated products')
+    console.log(newProducts)
+    console.log('updated products')
+    console.log('updated products')
+  }
+
+  const handlePageChange = (comp) => {
+    reRenderData();
+    setChildPage(comp)
+  }
   
   return (
     <div className="storeManagmentPage">
@@ -67,10 +84,10 @@ function StoreManagment() {
                         <button onClick={() => setChildPage(<StoreDesign reRenderData={reRenderData} userData={userData} storeData={storeDataProp} title={'עיצוב החנות'}/>)}>עיצוב החנות</button>
                     </li>
                     <li>
-                        <button onClick={() => setChildPage(<StoreProducts reRenderData={reRenderData} userData={userData} storeData={storeDataProp} title={'ניהול מוצרים'}/>)}>ניהול מוצרים</button>
+                        <button onClick={() => setChildPage(<StoreProducts reRenderData={reRenderData} userData={userData} storeData={storeDataProp} updateProducts={updateProducts} title={'ניהול מוצרים'}/>)}>ניהול מוצרים</button>
                         <ul>
                           <li>
-                            <button onClick={() => setChildPage(<NewProduct reRenderData={reRenderData} userData={userData} storeData={storeDataProp} title={'הוספת מוצר חדש'}/>)}>הוספת מוצר חדש</button>
+                            <button onClick={() => setChildPage(<NewProduct reRenderData={reRenderData} userData={userData} storeData={storeDataProp} updateProducts={updateProducts} title={'הוספת מוצר חדש'}/>)}>הוספת מוצר חדש</button>
                           </li>
                         </ul>
                     </li>

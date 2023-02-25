@@ -67,19 +67,23 @@ model Sellers {
 }
 
 model Products {
-  id               String     @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  mainImage        String?
-  gallery          String[]
-  price            Int
-  store            Stores?    @relation(fields: [storeId], references: [id])
-  storeId          String?    @db.ObjectId
-  orders           Orders[]   @relation(fields: [ordersIds], references: [id])
-  ordersIds        String[]   @db.ObjectId
-  category         Categories @relation(fields: [categoriesId], references: [id])
-  categoriesId     String     @db.ObjectId
-  shortdescription String
-  description      String
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  productIdentifier Int
+  name              String
+  mainImage         String?
+  gallery           String[]
+  price             Int
+  publishState      Boolean    @default(false)
+  onsale            Boolean    @default(false)
+  saleprice         Int?
+  store             Stores?    @relation(fields: [storeId], references: [id])
+  storeId           String?    @db.ObjectId
+  orders            Orders[]   @relation(fields: [ordersIds], references: [id])
+  ordersIds         String[]   @db.ObjectId
+  category          Categories @relation(fields: [categoriesId], references: [id])
+  categoriesId      String     @db.ObjectId
+  shortdescription  String?
+  description       String?
 }
 
 model Categories {
