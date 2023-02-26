@@ -23,7 +23,7 @@ const Preview = (props) => {
         <div className='gallery_Preview'>
           {props.currentProduct.gallery?.map((image) => {
             return (
-              <Image key={image} src={image} width={300} height={300} alt='Product Main Image Big Size'/>
+              !image ? 'טוען את התמונה' : <Image loading='eager' key={image} src={image} width={300} height={300} alt='Product Main Image Big Size'/>
             )
           })}
         </div>

@@ -9,6 +9,7 @@ import ActiveOrders from "./MyAccComps/MyOrdersComp/ActiveOrders";
 import CompletedOrders from "./MyAccComps/MyOrdersComp/CompletedOrders";
 import MyAccountMain from "./MyAccComps/MyAccMain";
 import MyProfile from "./MyAccComps/MyProfile";
+import Loader from "app/Loader";
 
 function MyAccountLayout() {
     const [userData, setUserData] = useState();
@@ -42,7 +43,7 @@ function MyAccountLayout() {
 
     return (
         <div className="MyAccountLayout">
-            {loading ? 'טוען את הנתונים' :
+            {loading ? <Loader/> :
                 <>
                     <aside>
                         <h3>תפריט החשבון שלי</h3>

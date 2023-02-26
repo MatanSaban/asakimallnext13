@@ -8,7 +8,7 @@ import storePlaceHolder from '../../public/media/storeplaceholder.webp'
 
 async function ShopInArchive(props) {
 
-    const shopData = props?.shopData;
+    const shopData = props?.shopData; 
 
     const { category } = await getCategoryById(shopData?.categoryId)
     const { products } = await getProductsByStoreId(shopData.id)

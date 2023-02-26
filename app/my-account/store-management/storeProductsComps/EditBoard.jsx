@@ -21,7 +21,7 @@ const EditBoard = (props) => {
 								{props.selectedRows.map((row) => {
 									console.log()
 									return (
-										<li style={{fontSize:'0.9rem'}} key={row.id}>{row.children[3].innerText}</li>
+										<li style={{fontSize:'0.9rem'}} key={row.id}>{row.children[2].innerText}</li>
 									)
 								})}
 							</ul>

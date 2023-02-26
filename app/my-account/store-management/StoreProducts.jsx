@@ -12,7 +12,7 @@ import Preview from "./storeProductsComps/Preview";
 
 
 const StoreProducts = (props) => {
-    const [products, setProducts] = useState(props?.storeData?.products);
+	const [products, setProducts] = useState(props.storeData.products)
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [popup, setPopup] = useState();
 	const [showEditBoard, setShowEditBoard] = useState();
@@ -21,15 +21,21 @@ const StoreProducts = (props) => {
 	const [success, setSuccess] = useState(false);
 	const [failure, setFailure] = useState(false);
 	const [fieldChange, setFieldChange] = useState();
+	const [isRowSelected ,setIsRowSelected] = useState(false);
 
 	useEffect(() => {
+		console.log('useEffect in StoreProducts')
+		console.log('useEffect in StoreProducts')
+		console.log('useEffect in StoreProducts')
+		console.log('useEffect in StoreProducts')
 		const getFreshProducts = async () => {
-			const getProducts = await axios.get(`/api/products/${props?.storeData?.id}`);
-			const theProducts = await getProducts.data.products;
+			const getProducts = await axios.post(`/api/products/${props?.storeData?.id}`,{});
+			const theProducts = await getProducts.data.data;
 			setProducts(await theProducts);
 		}
 		getFreshProducts();
-	},[props?.storeData])
+		// console.log(products)
+	},[props.storeData.products, popup])
 
 	
 	const trimString = (str, maxLength) => {
@@ -81,40 +87,8 @@ const StoreProducts = (props) => {
 		setPopup(popupStructure('deletePopup', deletePopupContent))
 	}
 
-
-
-
-	
-	
-	const handleImages = (e, productId) => {
-		e.preventDefault();
-		let closestSection
-		let inputUpload;
-		console.log('e.target.name')
-		console.log(e.target)
-
 		
-		// if (e.target.name === 'single') {
-		// 	console.log("here")
-		// 	closestSection = e.target.closest('.section'); 
-		// 	const inputUpload = closestSection.querySelector('input#singleImage').click()
-		
-		// } else if (e.target.name === 'multiple') {
-			// 	console.log("here2")
-			// 	closestInput = e.target.closest('input#multiple')
-			// 	console.log(closestInput.querySelector(''))
-			// }
-			
-			
-
-	}
-
-	const updateProductApiCall = (productId, obj) => {
-		
-	}
-
-	
-	const handleSubmit = async (e, productId, newObj) => {
+	const handleSubmit = async (e, productId, newObj, isEditProduct) => {
 		e.preventDefault();
 		const oldGalleryImages = [];
 		const galleryImagesToConvert = [];
@@ -161,7 +135,7 @@ const StoreProducts = (props) => {
 			const response = await axios.put(`/api/products/${productId}`, newObj);
 			console.log('received updateProductApiCall response:', response.data);
 			let newProducts = [];
-			products.map((product) => {
+			props.storeData.products.map((product) => {
 				if (product.id === productId) {
 					product = response.data;
 					newProducts.push(product.data)
@@ -170,18 +144,20 @@ const StoreProducts = (props) => {
 				}
 			})
 			props.updateProducts(newProducts)
-			setProducts(newProducts)
-			setPopup(popupStructure('singleProductEdit', <EditProduct handleSubmit={handleSubmit} getEditAllProperties={getEditAllProperties} setEditAllProperties={setEditAllProperties} product={response.data.data} success={'המוצר עודכן בהצלחה, סוגר את החלון'} />))
-			setTimeout(() => {
-				setPopup(false)
-			}, 1500);
+
+			if (isEditProduct) {
+				setPopup(popupStructure('singleProductEdit', <EditProduct handleSubmit={handleSubmit} getEditAllProperties={getEditAllProperties} setEditAllProperties={setEditAllProperties} product={response.data.data} success={'המוצר עודכן בהצלחה, סוגר את החלון'} />))
+				setTimeout(() => {
+					setPopup(false)
+				}, 1500);
+			}
 			return response.data.data; // updated product
 		  } catch (error) {
 			console.error('Error updating product:', error);
 			return undefined;
 		  }
 
-	  };
+	};
 	  
 				
 	  
@@ -189,7 +165,7 @@ const StoreProducts = (props) => {
 
 
 	const handleEditSingleProd = (productId, row) => {
-		const product = products.find(p => p.id === productId);
+		const product = props.storeData.products.find(p => p.id === productId);
 		
 
 		setPopup(popupStructure('singleProductEdit', <EditProduct handleSubmit={handleSubmit} getEditAllProperties={getEditAllProperties} setEditAllProperties={setEditAllProperties} product={product} row={row} />))
@@ -205,17 +181,20 @@ const StoreProducts = (props) => {
 		const productName = row.querySelector(".title").innerText;
 		let newSelectedRows = selectedRows;
 		let currentProduct;
-		products.forEach((product) => {
+		props.storeData.products.forEach((product) => {
 			if (product.id === productId) {
 				currentProduct = product
 			}
 		}) 
 
+		console.log(target.checked);
 		
 		if (target.checked) {
 			newSelectedRows.push(row)
 			setSelectedRows(newSelectedRows);
+			setIsRowSelected(true)
 		} else {
+			setIsRowSelected(false)
 			newSelectedRows = newSelectedRows.filter(item => {
 				if (item.id === row.id) {
 				  return false; // Exclude the row from the filtered array
@@ -277,11 +256,73 @@ const StoreProducts = (props) => {
 		}
 	}
 	
-	const handleDeleteAllSelected = (e) => {
-		const table = document.querySelector('table');
-		const tbodyArr = Array.from(table.querySelector('tbody').children);
-	}
-	
+	// const handleDeleteAllSelected = async (e) => {
+	// 	const table = document.querySelector('table');
+	// 	const tbodyArr = Array.from(table.querySelector('tbody').children);
+	// 	const rowsToDelete = [];
+	// 	const productIdsToDelete = []
+	// 	const productsToUpdate = [];
+	// 	tbodyArr.forEach((row) => {
+	// 		if (row.querySelector('.checkbox input').checked) {
+	// 			productIdsToDelete.push(row.id)
+	// 			rowsToDelete.push(row)
+	// 		}
+	// 	})
+			
+	// 	await Promise.all(productIdsToDelete.map(async (productId) => {
+	// 		setTimeout(async() => {
+	// 			const del = await axios.delete(`/api/products/${productId}`);
+	// 			const deleted = await del.data;
+	// 			if (deleted.deleted == true) {
+	// 				tbodyArr.forEach((row) => {
+	// 					if (row.id === `${productId}`) {
+	// 						row.style.background = 'red';
+	// 						setTimeout(() => {
+	// 							row.remove()
+	// 						}, 1000);
+	// 					}
+	// 				})
+	// 			}
+	// 		}, 2000);
+	// 	  }));
+
+	// 	  products.forEach((product) => {
+	// 		if (!productIdsToDelete.some((id) => product.id === id)) {
+	// 			productsToUpdate.push(product);
+	// 		}
+	// 	  });
+		  
+
+	// 	  props.updateProducts(productsToUpdate);
+	// 	  setProducts(productsToUpdate);
+	// 	  setPopup(false);
+		  
+
+	// }
+
+	const handleDeleteAllSelectedPopup = async () => {
+		const popup = 
+		  <div>
+			<h2>למחוק את כל המוצרים שסימנת?</h2>
+			<div>
+			  <button onClick={async (e) => {
+				const success = await props.handleSubmit(e, selectedRows, 'deleteProducts');
+				if (success) {
+				  console.log('All products deleted successfully.');
+				  setTimeout(() => {
+					setPopup(false);
+				  }, 2000);
+				}
+			  }}>כן</button>
+			  <button onClick={() => setPopup(false)}>לא</button>
+			</div>
+		  </div>
+		
+		setPopup(popupStructure('previewPopup', popup))
+	  }
+	  
+	  
+	  
 	
 	
 	const handleEditAllSave = async (e) => {
@@ -293,17 +334,16 @@ const StoreProducts = (props) => {
 		
 		try {
 			await Promise.all(selectedRowsArr.map(async id => {
-				const product = products.find(p => p.id === id);
+				const product = props.storeData.products.find(p => p.id === id);
 				const response = await axios.put(`/api/products/${id}`, editAllProperties);
 				updatedProducts.push(response.data.data);
 				setLoading(`מעדכן את המוצר - "${product.name}"`);
 			}));/////////////////////////////////////////////// end of api calls and map
-			const newProducts = products.map(product => {
+			const newProducts = props.storeData.products.map(product => {
 				const updatedProduct = updatedProducts.find(updated => updated.id === product.id);
 				return updatedProduct ? updatedProduct : product;
 			});
 			
-			setProducts(newProducts);
 			setSuccess(true);
 			setLoading(false);
 			setShowEditBoard(!showEditBoard)
@@ -319,14 +359,12 @@ const StoreProducts = (props) => {
 		setEditAllProperties(obj)
 	  }
 
-
-
     return (
         <div className="manageProducts">
             <h1>{props.title}</h1>
 			<div className="handlers">
-				<button style={selectedRows.length == 0 ? {background:'#cea965', cursor:'not-allowed'} : null} onClick={(e) => handleEditAllSelected(e)} className="editChecked">{showEditBoard ? 'סגירת העריכה' : 'עריכת כל המסומנים'}</button>
-				<button style={selectedRows.length == 0 ? {cursor:'not-allowed'} : null} onClick={(e) => handleDeleteAllSelected(e)} className="deleteChecked">מחיקת כל המסומנים</button>
+				<button style={!selectedRows.length ? {background:'#cea965', cursor:'not-allowed'} : {cursor:'pointer'}} onClick={(e) => handleEditAllSelected(e)} className="editChecked">{showEditBoard ? 'סגירת העריכה' : 'עריכת כל המסומנים'}</button>
+				<button style={!selectedRows.length ? {cursor:'not-allowed'} : {cursor:'pointer'}} onClick={(e) => !selectedRows.length ? '' : handleDeleteAllSelectedPopup(e)} className="deleteChecked">מחיקת כל המסומנים</button>
 			</div>
 			{popup && popup}
 			{showEditBoard && 

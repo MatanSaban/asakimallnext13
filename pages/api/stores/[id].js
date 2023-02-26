@@ -27,6 +27,7 @@ const handler = async (req, res) => {
       const id = req.query.id;
       const data = req.body;
       const { updatedStore, error } = await updateStore(id, data);
+      console.log(id)
       if (error) throw new Error(error);
       return res.status(200).json({ data: updatedStore });
     } catch (error) {

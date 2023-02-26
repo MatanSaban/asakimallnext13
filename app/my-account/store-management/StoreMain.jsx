@@ -20,7 +20,7 @@ const StoreMain = (props) => {
 				</div>
 				<div>
 					<h4>כמות מוצרים</h4>
-					<p>{props.storeData?.products.length} מוצרים</p>
+					<p>{props.storeData?.products?.length} מוצרים</p>
 				</div>
 				<div>
 					<h4>כמות מכירות</h4>
@@ -37,7 +37,7 @@ const StoreMain = (props) => {
 			</div>
 			<div className='storePromotions'>
 				{
-					props.storeData?.products.length === 0 && 
+					props.storeData?.products?.length === 0 && 
 					<>
 						<div className='noProducts'>
 							<h3>עוד לא הוספת מוצרים לחנות..</h3>

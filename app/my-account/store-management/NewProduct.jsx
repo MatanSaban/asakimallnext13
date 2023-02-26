@@ -1,35 +1,42 @@
 'use client'
 
 import axios from "axios";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 
-const NewProduct = (props) => {
+const NewProduct = ({ title, userData, storeData, updateProducts, handleSubmit, reRenderData }) => {
 
 	const [onSale, setOnSale] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const [failure, setFailure] = useState(false);
+	const [gallery, setGallery] = useState([]);
+	const [mainImage, setMainImage] = useState();
 	const [productState, setProductState] = useState();
-	const highestProductIdentifier = props?.storeData?.products.reduce((prev, current) => {
+	const highestProductIdentifier = storeData?.products?.length && storeData?.products?.reduce((prev, current) => {
 		return (prev.productIdentifier > current.productIdentifier) ? prev : current
 	  });
 
 	const [product, setProduct] = useState({
-		productIdentifier : highestProductIdentifier.productIdentifier + 1,
+		productIdentifier : highestProductIdentifier?.productIdentifier ? highestProductIdentifier?.productIdentifier + 1 : 1,
 		name : '',
 		mainImage : '',
 		gallery : [],
 		price : 0,
 		onsale : false,
 		saleprice : 0,
-		storeId : props?.storeData?.id ? props?.storeData?.id : '',
+		storeId : storeData?.id ? storeData?.id : '',
 		ordersIds : [],
-		categoriesId : props?.storeData?.categoryId,
+		categoriesId : storeData?.categoryId,
 		shortdescription : '', 
 		publishState : false,
 		description : ''
 	});
+
+	useEffect(() => {
+		console.log('useeffect from newProductss')
+	},[loading, success, failure])
 
 	const handleBoolean = (e) => {
 		if (e.target.name === 'onsale') {
@@ -46,62 +53,90 @@ const NewProduct = (props) => {
 
 		if (fieldName === 'price' || fieldName === 'saleprice') {
 			fieldValue = parseInt(fieldValue)
+		} else if (fieldName === 'mainImage') {
+			fieldValue = e.target.files[0]
+			setMainImage(URL.createObjectURL(e.target.files[0]))
+		} else if (fieldName === 'gallery') {
+			fieldValue = e.target.files
 		}
 		setProduct({ ...product, [fieldName]: fieldValue });
 	}
 
-	const handleSubmit = (e) => {
+	const sendData = async (e) => {
 		e.preventDefault();
 		setLoading(true)
-		setFailure(false)
 		setSuccess(false)
-		try {
-			axios.post(`/api/products`, product).then((res) => {
-				const theProduct = res.data.data;
-				const currentProducts = props.storeData.products;
-				let newProducts = currentProducts;
-				setLoading(false)
-				setFailure(false)
-				setSuccess(true)
-				setProduct({
-					productIdentifier : highestProductIdentifier.productIdentifier + 1,
-					name : '',
-					mainImage : '',
-					gallery : [],
-					price : 0,
-					onsale : false,
-					saleprice : 0,
-					storeId : props?.storeData?.id ? props?.storeData?.id : '',
-					ordersIds : [],
-					categoriesId : props?.storeData?.categoryId,
-					shortdescription : '', 
-					publishState : false,
-					description : ''
-				});
-				newProducts.push(theProduct)
-				props.updateProducts(newProducts);
-				e.target.reset();
-			})
-		} catch (error) {
-				setLoading(false)
-				setFailure(true)
-				setSuccess(false)
-		}
+		 const isDone = await handleSubmit(e, product, 'newProduct');
+		 e.target.reset()
+		 setProduct({
+			productIdentifier : highestProductIdentifier?.productIdentifier ? highestProductIdentifier?.productIdentifier + 1 : 1,
+			name : '',
+			mainImage : '',
+			gallery : [],
+			price : 0,
+			onsale : false,
+			saleprice : 0,
+			storeId : storeData?.id ? storeData?.id : '',
+			ordersIds : [],
+			categoriesId : storeData?.categoryId,
+			shortdescription : '', 
+			publishState : false,
+			description : ''
+		})
+		setGallery([])
+		setMainImage('')
+		setLoading(false)
+		setOnSale(false)
+		setSuccess(true)
 	}
+
+	const handleMultipleFiles = (e) => {
+        let filesArr = [];
+        const files = e.target.files;
+        const filesToPass = []
+        const toArray = Array.from(files);
+        toArray.forEach((file) => {
+            filesArr.push(URL.createObjectURL(file))
+            filesToPass.push(file)
+        })
+        setGallery([...gallery , ...filesArr])
+        setProduct({ ...product , gallery: filesToPass })
+    }
+
+	function removeFromGallery(item) {
+        console.log('item')
+        console.log(item)
+        const newGallery = []
+        const newGalleryToPass = []
+        gallery.forEach((image) => {
+            if (image != item) {
+                newGallery.push(image)
+                newGalleryToPass.push(image)
+            }
+        })
+			setGallery(newGallery)
+			setProduct({...product, gallery: newGalleryToPass})
+      }
+
+	  const handleDeleteSingleImage = () => {
+		setProduct({...product, mainImage: ''});
+		setMainImage('')
+	  }
+
 
     return (
         <div className="addProduct">
-            <h1>{props.title}</h1>
+            <h1>{title}</h1>
             <div className="formWrapper">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => sendData(e)}>
 					<div className="section">
 						<div>
-						<label htmlFor="name">שם המוצר</label>
-						<input required onChange={(e) => handleField(e)} type="text" name="name" id="name" />
+							<label htmlFor="name">שם המוצר</label>
+							<input required onChange={(e) => handleField(e)} type="text" name="name" id="name" />
 						</div>
 						<div>
-						<label htmlFor="price">מחיר</label>
-						<input required onChange={(e) => handleField(e)} type="number" name="price" id="price" />
+							<label htmlFor="price">מחיר</label>
+							<input required onChange={(e) => handleField(e)} type="number" name="price" id="price" />
 						</div>
 					</div>
 					<div className="section">
@@ -128,14 +163,38 @@ const NewProduct = (props) => {
 						</div>
 					</div>
 					<div className="section">
-						<div>
-							<label htmlFor="mainImage">תמונה ראשית</label>
-							<input onChange={(e) => handleField(e)} type="file" name="mainImage" id="mainImage" />
-						</div>
-						<div>
-							<label htmlFor="gallery">גלריית תמונות</label>
-							<input onChange={(e) => handleField(e)} type="file" multiple name="gallery" id="gallery" />
-						</div>
+							<div className="mainImage" style={{flexDirection:'column'}}>
+								<label htmlFor="">תמונה ראשית</label>
+								<input type='file' onChange={(e) => handleField(e)}  name='mainImage' style={{display:'none'}} id="singleImage" defaultValue={product.mainImage.name} />
+								<button htmlFor="singleImage" name="single" onClick={(e) => {e.preventDefault(); e.target.closest('.section').querySelector('input#singleImage').click()} }>העלאת תמונה</button>
+								{mainImage && 
+								<div>
+									<Image style={{width:'100%', objectFit:'cover', height:'300px'}} src={mainImage} alt="" width={100} height={100} />
+									<i style={{color:'red', position:'absolute', top:'10px', left:'10px', fontStyle:'normal', cursor:'pointer'}} className='deleteMainImage' onClick={() => handleDeleteSingleImage()}>x</i>
+								</div>
+								} 
+							</div>
+					</div>
+					<div className="section">
+						<div className="galleryWrapper">
+								<div className="gallery">
+									<label htmlFor="">גלריית המוצר</label>
+									<input id='multiple' onChange={(e) => handleMultipleFiles(e) } type="file" multiple />
+									<div >
+										<button name="multiple" onClick={(e) => {e.preventDefault(); e.target.closest('.gallery').querySelector('input#multiple').click()} }>העלאה לגלריה</button>
+										{gallery.length > 0 && <div className="imageGallery">
+											{gallery?.map((image) => {
+												return (
+													<div key={image}>
+														<i onClick={() => removeFromGallery(image)}>x</i>
+														<Image src={image} width={100} height={100} alt='temporary image in gallery'/>
+													</div>
+												)
+											})}
+										</div>}
+									</div>
+								</div>
+							</div>
 					</div>
 					<div className="section">
 						<div>

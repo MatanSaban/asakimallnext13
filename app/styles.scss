@@ -163,6 +163,7 @@ header {
   position: fixed;
   width: 100vw;
   height: 100vh;
+  z-index: 9;
   opacity: 0;
   background-color: #00000060;
   backdrop-filter: blur(0);
@@ -173,7 +174,7 @@ header {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 4;
   }
 }
 .popUpWrapper.showCart {
@@ -400,6 +401,7 @@ form {
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 9;
   width: 100vw;
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.566);
@@ -437,6 +439,8 @@ form {
 /*END OF GENERAL CSS*/
 
 /* Pages */
+
+/* new products */
 
 /* StoreManagement-> ManageProducts */
 .manageProducts {
@@ -699,7 +703,7 @@ form {
         .icons {
           font-size: 1.2rem;
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
           .editIcon {
             color: rgb(113, 76, 7);  
             cursor: pointer;
@@ -721,7 +725,7 @@ form {
           font-size: larger;
           .icons {
             display: flex;
-            justify-content: space-between;  
+            justify-content: space-around;  
             .editIcon {
               color: black;
             }
@@ -744,6 +748,70 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .formWrapper {
+
+    form {
+
+      .section {
+        div.mainImage {
+          width: 100%;
+          div {
+            width: 100%;
+            img {
+              width: 100%;
+              object-fit: contain;
+              
+            }
+          }
+        }
+        .galleryWrapper {
+          width: 100%;
+          .gallery {
+            width: 100%;
+            margin: 0;
+            > div {
+              margin: 0;
+              flex-direction: column;
+              width: 100%;
+              position: relative;
+              button {
+                width: 100%;
+                height: fit-content;
+              }
+              .imageGallery {
+                width: 100%;
+                border: 2px solid black;
+                border-top: 0;
+                margin: 0 auto;
+                border-radius: 10px;
+                flex-wrap: nowrap;                
+                height: fit-content;
+                overflow-x: auto;
+                max-width: 600px;
+                position: relative;
+                div {
+                  margin: 0;
+                  i {
+                    cursor: pointer;
+                    color: red;
+                    position: absolute;
+                    top: 5px;
+                    left: 5px;
+                  }
+                }
+              }
+            }
+            label {
+              z-index: 5;
+            }
+            #multiple {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 /* StoreManagement Layout */
 .storeManagmentPage {
@@ -822,14 +890,16 @@ form {
 .MyAccountLayout , .storeManagmentPage {
   display: flex;
   justify-content: flex-start;
+  
   main {
     margin: 50px auto;
-    width: 100%;
+    width: 50%;
     text-align: center;
   }
   aside {
     width: 15%;
     padding: 50px 0 0 0;
+    z-index: 2;
     background-color: whitesmoke;
     display: flex;
     flex-direction: column;
@@ -971,6 +1041,21 @@ main.registerPage {
     padding: 5px 10px;
   }
 }
+
+/* StoreSettings */
+  .publishStore, .dangerZone {
+    border: 1px solid black;
+    width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 20px;
+    h2 {
+      margin: 0;
+    }
+  }
+  .dangerZone {
+    border: 2px dotted red;
+  }
 /* end of Pages */
 
 /*popup css*/
@@ -1035,6 +1120,18 @@ main.registerPage {
   }
 }
 /*end of popup css*/
+
+/* Loader CSS */
+.Loader {
+  min-height: 78.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  font-size: 5rem;
+}
+/* End Of Loader CSS */
 
 /* phone shop model */
 main.index.storesPage {
