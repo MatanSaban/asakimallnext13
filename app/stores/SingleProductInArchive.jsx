@@ -71,12 +71,21 @@ function SingleProductInArchive(props) {
         <Link href={`/stores/${storeSlug}/${product?.id}`} className='product' key={product?.id}>
             <div className='productDetails'>
                 <div className='productImage'>
-                    <img src={'https://greendiamonds.co.il/wp-content/uploads/2022/10/%D7%98%D7%91%D7%A2%D7%AA-3-%D7%99%D7%94%D7%9C%D7%95%D7%9E%D7%99%D7%9D-%D7%96%D7%94%D7%91-%D7%A6%D7%94%D7%95%D7%91-%D7%9E%D7%A2%D7%91%D7%93%D7%94-1-300x300.jpg'} alt='product image' width={150} height={150} />
+                    <Image src={product.mainImage} alt={`the product - ${product.name} main image`} width={100} height={100} />
                 </div>
             </div>
             <div className='productData'>
                 <h3>{product?.name}</h3>
-                <h4>{(product?.price * 1.17).toFixed(2)} ₪ כולל מע&quot;מ</h4>
+                {product.shortdescription ? <p>{product.shortdescription}</p> : ''}
+                <h4 style={{width:'100%'}}>
+                    {product.onsale ? 
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-around', marginBottom:'10px'}}>
+                        <span style={{textDecoration:'line-through', color:'red'}}>{(product.price * 1.17).toFixed(2)}</span>
+                        <span style={{color:'green'}}>{(product.saleprice * 1.17).toFixed(2)}</span>
+                    </div> 
+                : 
+                ''
+                }</h4>
                 <button name={product?.id} onClick={(e) => handleAddToCart(e)}>הוספה לסל</button>
             </div>
         </Link>

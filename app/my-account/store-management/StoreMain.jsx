@@ -46,7 +46,7 @@ const StoreMain = (props) => {
 								<br />
 								כדי לנצל את החשיפה הגבוהה של חנות חדשה באתר..
 							</p>
-							<button>הוספת המוצר הראשון שלי</button>
+							<button onClick={() => props.setChild('NewProduct')}>הוספת המוצר הראשון שלי</button>
 						</div>
 						<div className='promotions'>
 							<h3>כבר ניסית את הקידום שלנו?</h3>

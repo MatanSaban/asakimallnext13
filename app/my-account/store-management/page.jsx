@@ -33,11 +33,17 @@ function StoreManagment() {
       const getData = async () => {
           const getUserData = axios.get(`/api/users/${userId}`);
           const userData = await getUserData;
+          console.log('userData')
+          console.log(userData)
           setUserData(await userData?.data?.user);
           if (userData?.data?.user) {
-            const getSellerData = axios.get(`/api/sellers/${userData.data.user.sellerId}`);
-            const sellerData = await getSellerData;
-            const storeId = await sellerData?.data?.seller.storeId
+            console.log('userData?.data?.user?.sellerId')
+            console.log(userData?.data?.user?.sellerId)
+            const getSellerData = await axios.get(`/api/sellers/${userData?.data?.user?.sellerId}`);
+            console.log('getSellerData')
+            console.log(getSellerData)
+            const sellerData = await getSellerData?.data;
+            const storeId = await sellerData?.seller?.storeId
             const getStoreData = axios.get(`/api/stores/${storeId}`);
             const storeData = await getStoreData;
             if (storeData?.data?.store) {
@@ -45,8 +51,10 @@ function StoreManagment() {
             }
             const getProducts = await axios.post(`/api/products/${storeId}`, {});
             const theProducts = await getProducts.data.data;
-            let newStoreData = storeData.data.store
-            newStoreData.products = theProducts
+            let newStoreData = await storeData.data.store
+            if (newStoreData) {
+              newStoreData.products = theProducts
+            }
               setStoreDataProp(newStoreData);
               setChildPage(<StoreMain userData={await userData?.data?.user} storeData={newStoreData} title={'ניהול החנות שלי'} />)
           }
@@ -253,6 +261,19 @@ function StoreManagment() {
 		
 		setStoreDataProp(object)
     }
+
+    const setChild = (childName) => {
+
+      switch (childName) {
+        case 'NewProduct':
+          setChildPage(<NewProduct reRenderData={reRenderData} userData={userData} storeData={storeDataProp} updateProducts={updateProducts} handleSubmit={handleSubmit} title={'הוספת מוצר חדש'}/>)
+          break;
+      
+        default:
+          break;
+      }
+
+    }
     
 
   return (
@@ -263,7 +284,7 @@ function StoreManagment() {
                 <h3>תפריט החנות שלי</h3>
                 <ul>
                     <li>
-                        <button onClick={() => setChildPage(<StoreMain userData={userData} storeData={storeDataProp} title={'ניהול החנות שלי'} />)}>ראשי</button>
+                        <button onClick={() => setChildPage(<StoreMain setChild={setChild} userData={userData} storeData={storeDataProp} title={'ניהול החנות שלי'} />)}>ראשי</button>
                     </li>
                     <li>
                         <button onClick={() => setChildPage(<StoreSettings updateStoreData={updateStoreData} reRenderData={reRenderData} userData={userData} storeData={storeDataProp}  title={'הגדרות החנות'}/>)}>הגדרות החנות</button>

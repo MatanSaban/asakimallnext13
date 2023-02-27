@@ -5,6 +5,8 @@ import SellersForm from './SellersForm'
 import cookieCutter from "cookie-cutter";
 import { userIdFromToken } from 'app/functions';
 import axios from 'axios';
+import { redirect } from 'next/navigation';
+
 
 
 function SellerRegisterPage() {
@@ -15,6 +17,15 @@ function SellerRegisterPage() {
         slug: '',
         categoryId: ''
     });
+    const [loading, setLoading] = useState();
+    const [redirectUser, setRedirectUser] = useState(false)
+
+    useEffect(() => {
+        if (redirectUser) {
+            redirect('/my-account/store-management')
+        }
+    },[redirectUser])
+
 
     const handleField = (e) => {
         const fieldName = e.target.name;
@@ -49,11 +60,13 @@ function SellerRegisterPage() {
             console.log('res 0')
             console.log(res)
             if (res.statusText === 'OK') {
+                setLoading('צובעים את הקירות של החנות החדשה שלך')
                 sellerId = res.data.sellerId;
                 axios.put(`/api/sellers/${res.data.data.sellerId}`, {
                     usersId : userId
                 }).then((res) => {
                     if (res.statusText === 'OK') {
+                        setLoading('מנקים את החנות')
                         console.log('res 1')
                         console.log(res)
                         axios.post(`/api/stores`, {
@@ -63,6 +76,7 @@ function SellerRegisterPage() {
                             "sellersId":sellerId,
                             "categoryId":storeFields.categoryId
                         }).then((res) => {
+                            setLoading('תולים את השלט')
                             console.log('res 2')
                             console.log(res)
                             storeId = res.data.data.id;
@@ -72,6 +86,10 @@ function SellerRegisterPage() {
                             }).then((res) => {
                                 console.log('res 3')
                                 console.log(res)
+                                setLoading('החנות שלך מוכנה, מיד מעבירים אותך לעמוד הניהול')
+                                setTimeout(() => {
+                                    setRedirectUser(true)
+                                }, 1500);
                                 // end
                                 // dont forget to check if is not successful, if so, remove setting from previous api calls 
 
@@ -102,6 +120,7 @@ function SellerRegisterPage() {
                 </p>
             </div>
             <SellersForm handleSubmit={handleSubmit} handleField={handleField} categories={categories}/>
+            {loading && loading}
         </main>
     )
 }

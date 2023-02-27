@@ -790,13 +790,21 @@ form {
                 max-width: 600px;
                 position: relative;
                 div {
-                  margin: 0;
+                  position: relative;
+                  margin: 5px;
+                  padding: 5px;
+                  border: 1px solid black;
+                  border-radius: 5px;
+                  width: fit-content;
                   i {
                     cursor: pointer;
                     color: red;
                     position: absolute;
                     top: 5px;
                     left: 5px;
+                  }
+                  img {
+                    object-fit: contain;
                   }
                 }
               }
@@ -893,17 +901,22 @@ form {
   
   main {
     margin: 50px auto;
-    width: 50%;
+    width: 70%;
     text-align: center;
   }
   aside {
     width: 15%;
     padding: 50px 0 0 0;
     z-index: 2;
-    background-color: whitesmoke;
+    background: linear-gradient(290deg, whitesmoke, white);
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    padding-top: 150px;
     ul {
       width: 100%;
       margin: 0 auto;
@@ -958,7 +971,7 @@ main.SingleStorePage {
       border-radius: 20px;
       box-shadow: 0 0 20px #00000050;
       min-height: 300px;
-      padding: 20px;
+      padding: 40px;
       position: relative;
       text-decoration: none;
       color: black;
